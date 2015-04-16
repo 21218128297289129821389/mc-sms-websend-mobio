@@ -50,17 +50,19 @@ if(isset($_POST['submit']))
 	$playername = htmlspecialchars(addslashes($_POST['playername']));
 	$usergroup = htmlspecialchars(addslashes($_POST['usergroup']));
 	
-	 if(mobio_checkcode($servID, $code, 0) == 1) {
-		 if($playername==NULL )
-		 {
-		$errormsg = '<div class="alert alert-danger" role="alert">Попълнете всички полета!</div>'; //Ако полетата са празни изписва това.
-		 }else{
-		//some more script...
-		$errormsg = '<div class="alert alert-success" role="alert">Честито групата е активирана!</div>'; //Активирана група...
-		 }
-	 }else{
-		$errormsg = '<div class="alert alert-danger" role="alert">СМС КОДА Е ГРЕШЕН! Опитай отново!</div>'; //Ако кода е грешен изписва това.
-	 }
+
+		 //if(!empty($_POST['playername']))
+		// {
+		//$errormsg = '<div class="alert alert-danger" role="alert">Попълнете всички полета!</div>'; //Ако полетата са празни изписва това.
+		// }else{
+		 	 if(mobio_checkcode($servID, $code, 0) == 1) {
+				//some more script...
+				$errormsg = '<div class="alert alert-success" role="alert">Честито групата е активирана!</div>'; //Активирана група...
+			}else{
+				$errormsg = '<div class="alert alert-danger" role="alert">СМС КОДА Е ГРЕШЕН! Опитай отново!</div>'; //Ако кода е грешен изписва това.
+			}
+		// }
+
 }
 ?>
 <!DOCTYPE html>
@@ -113,7 +115,7 @@ if(isset($_POST['submit']))
         
 		<div class="form-group">
 			<label for="playername">Minecraft име <font color="red">*</font></label>
-			<input type="text" class="form-control" id="playername" placeholder="Въведи точно името си от сървъра!">
+			<input type="text" class="form-control" id="playername" placeholder="Въведи точно името си от сървъра!" required>
 		</div>
 		
 		<div class="form-group">
@@ -128,7 +130,7 @@ if(isset($_POST['submit']))
 		
 		<div class="form-group">
     		<label for="smscode">СМС Код <font color="red">*</font></label>
-    		<input type="text" class="form-control" id="code" placeholder="Въведи смс кода който получи!">
+    		<input type="text" class="form-control" id="code" placeholder="Въведи смс кода който получи!" required>
 		</div>
 		
   		<input type="submit" class="btn btn-default" name="submit" value="Изпълни" />
