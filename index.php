@@ -12,11 +12,11 @@ $ws->password = "999988";//Паролата от config файла на сърв
 $errormsg = '';
 
 //Настройки
-$siteTitle = "PHP-Example-for-Websend-and-Minecraft-Server-with-Mobio.BG"; //Име на сайта
+$siteTitle = "Сайт име"; //Име на сайта
 
-$siteDescription = "PHP-Example-for-Websend-and-Minecraft-Server-with-Mobio.BG"; //Description
+$siteDescription = "Сайт описание"; //Description
 
-$siteNavTextTitle = "Смс система с mobio.bg и websend за minecraft"; //Текста на шапката
+$siteNavTextTitle = "Сайт име"; //Текста на шапката
 
 //---/
 
