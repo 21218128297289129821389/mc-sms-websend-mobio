@@ -12,5 +12,7 @@ Demo: http://php-example-for-websend-and-minecraft-server-with-mobio.bg.dimitar.
 
 Моля прегледайте всички файлове и редактирайте каквото е нужно!
 
+За /server_files/plugins/websend/config.txt следвайте точно примера!
+
 Всичко е тествано и работи отлично!
 С помоща на websend можете да правите много неща!
