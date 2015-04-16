@@ -3,9 +3,7 @@ date_default_timezone_set('Europe/Sofia'); //Задаваме времева з�
 $starttime = explode(' ', microtime());		//Стартираме
 $starttime = $starttime[1] + $starttime[0];	//Микротаймера
 
-$playername = htmlspecialchars(addslashes($_POST['playername']));
-$usergroup = htmlspecialchars(addslashes($_POST['usergroup']));
-$smscode = htmlspecialchars(addslashes(trim($_POST['smscode'])));
+$errormsg = '';
 
 //Настройки
 $siteTitle = "PHP-Example-for-Websend-and-Minecraft-Server-with-Mobio.BG"; //Име на сайта
@@ -18,14 +16,14 @@ $siteNavTextTitle = "Смс система с mobio.bg и websend за minecraft
 
 //---/
 
-$mobioID = 26130; //ID на услуга от Mobio.bg
+$servID = 26130; //ID на услуга от Mobio.bg
 
 $smsSendInfo = "Изпрати смс на номер 0000 с текст TXTTT на цена 6.00лв с ДДС!"; //Информация за изпращане на смс-а
 
 //Функция за връзка с mobio.bg
-function check_mobio_code($mobioID, $smscode, $debug=0) {
+function mobio_checkcode($servID, $code, $debug=0) {
 	
-	$res_lines = file("http://www.mobio.bg/code/checkcode.php?servID=$mobioID&code=$smscode");
+	$res_lines = file("http://www.mobio.bg/code/checkcode.php?servID=$servID&code=$code");
 	
 	$ret = 0;
 	if($res_lines) {
@@ -48,17 +46,21 @@ function check_mobio_code($mobioID, $smscode, $debug=0) {
 //Заявката
 if(isset($_POST['submit']))
 {
+	$code = trim($_POST['code']);
+	$playername = htmlspecialchars(addslashes($_POST['playername']));
+	$usergroup = htmlspecialchars(addslashes($_POST['usergroup']));
 	
-	if(check_mobio_code($mobioID, $smscode, 0) == 1) {
-		if($playername==NULL )
-			{
-				$errormsg = '<div class="alert alert-danger" role="alert">Попълнете всички полета!</div>'; //Ако полетата са празни изписва това.
-			}else{
-				//websend
-			}
-	}else{
+	 if(mobio_checkcode($servID, $code, 0) == 1) {
+		 if($playername==NULL )
+		 {
+		$errormsg = '<div class="alert alert-danger" role="alert">Попълнете всички полета!</div>'; //Ако полетата са празни изписва това.
+		 }else{
+		//some more script...
+		$errormsg = '<div class="alert alert-success" role="alert">Честито групата е активирана!</div>'; //Активирана група...
+		 }
+	 }else{
 		$errormsg = '<div class="alert alert-danger" role="alert">СМС КОДА Е ГРЕШЕН! Опитай отново!</div>'; //Ако кода е грешен изписва това.
-	}
+	 }
 }
 ?>
 <!DOCTYPE html>
@@ -126,7 +128,7 @@ if(isset($_POST['submit']))
 		
 		<div class="form-group">
     		<label for="smscode">СМС Код <font color="red">*</font></label>
-    		<input type="text" class="form-control" id="smscode" placeholder="Въведи смс кода който получи!">
+    		<input type="text" class="form-control" id="code" placeholder="Въведи смс кода който получи!">
 		</div>
 		
   		<input type="submit" class="btn btn-default" name="submit" value="Изпълни" />
