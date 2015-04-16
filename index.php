@@ -16,8 +16,6 @@ $siteTitle = "PHP-Example-for-Websend-and-Minecraft-Server-with-Mobio.BG"; //И�
 
 $siteDescription = "PHP-Example-for-Websend-and-Minecraft-Server-with-Mobio.BG"; //Description
 
-$siteAuthor = "TheEVILbg"; //Автор на сайта
-
 $siteNavTextTitle = "Смс система с mobio.bg и websend за minecraft"; //Текста на шапката
 
 //---/
@@ -83,7 +81,6 @@ if(isset($_POST['submit']))
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="<?php echo $siteDescription; ?>">
-    <meta name="author" content="<?php echo $siteAuthor; ?>">
     <link rel="icon" href="http://getbootstrap.com/favicon.ico">
 
     <title><?php echo $siteTitle; ?></title>
@@ -154,7 +151,7 @@ if(isset($_POST['submit']))
       </div>
 
       <footer class="footer">
-        <p>&copy; <span style="float:right;"><?php $mtime = explode(' ', microtime());$totaltime = $mtime[0] + $mtime[1] - $starttime;printf('Страницата се генерира за %.3f секунди.', $totaltime); //показваме микротаймера?></span></p>
+        <p>&copy; <a href="https://github.com/TheEVILbg">TheEVIL</a><span style="float:right;"><?php $mtime = explode(' ', microtime());$totaltime = $mtime[0] + $mtime[1] - $starttime;printf('Страницата се генерира за %.3f секунди.', $totaltime); //показваме микротаймера?></span></p>
       </footer>
 
     </div> <!-- /container -->
