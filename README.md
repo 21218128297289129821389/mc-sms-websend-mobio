@@ -9,6 +9,8 @@ Demo: http://php-example-for-websend-and-minecraft-server-with-mobio.bg.dimitar.
 
 *Проверява се кода от мобио...
 
+- Отпушете порт 6985
+
 
 Моля прегледайте всички файлове и редактирайте каквото е нужно!
 
