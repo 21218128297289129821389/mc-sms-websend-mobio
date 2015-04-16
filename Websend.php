@@ -6,14 +6,14 @@
      */
 	class Websend
 	{
-        public $timeout = 3600;/* Connection timeout as defined in fsockopen */
-        public $password = "999988";/* Password in Websend server config */
+        public $timeout = 7;/* Connection timeout as defined in fsockopen */
+        public $password = "999988"; //паролата от конфиг файла на сървъра!
         
 		var $host;
 		var $port;
 		var $stream;
 
-		public function __construct($host, $port = 6985) 
+		public function __construct($host, $port = 6985) //порт за уебсенд
 		{
 			$this->host = $host;
 			$this->port = $port;
