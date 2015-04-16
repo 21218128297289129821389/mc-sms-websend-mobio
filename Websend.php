@@ -13,7 +13,7 @@
 		var $port;
 		var $stream;
 
-		public function __construct($host, $port = 6985) //порт за уебсенд
+		public function __construct($host, $port = 6985) //порт за уебсенд не го променяй ако не е наложително! трябва да е отворен за приемане и подаване :D...
 		{
 			$this->host = $host;
 			$this->port = $port;

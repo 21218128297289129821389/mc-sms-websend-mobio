@@ -3,6 +3,12 @@ date_default_timezone_set('Europe/Sofia'); //Задаваме времева з�
 $starttime = explode(' ', microtime());		//Стартираме
 $starttime = $starttime[1] + $starttime[0];	//Микротаймера
 
+//Websend настройки
+include_once 'Websend.php';//Websend api
+$ws = new Websend("77.71.57.99");//IP на сървъра 
+$ws->password = "999988";//Паролата от config файла на сървъра
+
+
 $errormsg = '';
 
 //Настройки
@@ -46,22 +52,27 @@ function mobio_checkcode($servID, $code, $debug=0) {
 //Заявката
 if(isset($_POST['submit']))
 {
-	$code = trim($_POST['code']);
+	$code = htmlspecialchars(addslashes(trim($_POST['code'])));
 	$playername = htmlspecialchars(addslashes($_POST['playername']));
 	$usergroup = htmlspecialchars(addslashes($_POST['usergroup']));
 	
-
-		 //if(!empty($_POST['playername']))
-		// {
-		//$errormsg = '<div class="alert alert-danger" role="alert">Попълнете всички полета!</div>'; //Ако полетата са празни изписва това.
-		// }else{
+	if($ws->connect()){ //проверяваме дали сървъра е пуснат...
+		 if($playername==NULL | $code==NULL )
+		 {
+		$errormsg = '<div class="alert alert-danger" role="alert">Попълнете всички полета!</div>'; //Ако полетата са празни изписва това.
+		 }else{
 		 	 if(mobio_checkcode($servID, $code, 0) == 1) {
-				//some more script...
-				$errormsg = '<div class="alert alert-success" role="alert">Честито групата е активирана!</div>'; //Активирана група...
+				$ws->doCommandAsConsole("pex user $playername group set $usergroup"); //Съответно ако искаш за един месец можеш да видиш в wiki-то на pex за lifetime
+				$ws->doCommandAsConsole("say $playername buy $usergroup");
+        		$ws->disconnect();
+				$errormsg = '<div class="alert alert-success" role="alert">Честито <font color="black">('.$playername.')</font> групата <font color="orange">('.$usergroup.')</font> е активирана!</div>'; //Активирана група...
 			}else{
 				$errormsg = '<div class="alert alert-danger" role="alert">СМС КОДА Е ГРЕШЕН! Опитай отново!</div>'; //Ако кода е грешен изписва това.
 			}
-		// }
+		 }
+	}else{
+		$errormsg = '<div class="alert alert-danger" role="alert">Сървъра е офлайн, моля ела отново когато е пуснат!</div>'; //Ако кода е грешен изписва това.
+    }
 
 }
 ?>
@@ -115,13 +126,13 @@ if(isset($_POST['submit']))
         
 		<div class="form-group">
 			<label for="playername">Minecraft име <font color="red">*</font></label>
-			<input type="text" class="form-control" id="playername" placeholder="Въведи точно името си от сървъра!" required>
+			<input type="text" class="form-control" name="playername" placeholder="Въведи точно името си от сървъра!">
 		</div>
 		
 		<div class="form-group">
 			<label for="usergroup">Избери ранг <font color="red">*</font></label>
-			
-		<select class="form-control" id="usergroup">
+			<!-- Можеш да добавяш още групи или да махаш съответно за да добавиш <option value="Vip">Vip</option> го добави след select  -->
+		<select class="form-control" name="usergroup">
 			<option value="MegaUser">MegaUser</option>
 			<option value="SuperUser">SuperUser</option>
 		</select>
@@ -130,7 +141,7 @@ if(isset($_POST['submit']))
 		
 		<div class="form-group">
     		<label for="smscode">СМС Код <font color="red">*</font></label>
-    		<input type="text" class="form-control" id="code" placeholder="Въведи смс кода който получи!" required>
+    		<input type="text" class="form-control" name="code" placeholder="Въведи смс кода който получи!">
 		</div>
 		
   		<input type="submit" class="btn btn-default" name="submit" value="Изпълни" />
