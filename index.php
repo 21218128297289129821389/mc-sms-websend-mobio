@@ -69,7 +69,7 @@ if(isset($_POST['submit']))
 			}
 		 }
 	}else{
-		$errormsg = '<div class="alert alert-danger" role="alert">Сървъра е офлайн, моля ела отново когато е пуснат!</div>'; //Ако кода е грешен изписва това.
+		$errormsg = '<div class="alert alert-danger" role="alert">Сървъра е офлайн, моля ела отново когато е пуснат!</div>'; //Ако сървъра е спрян изписва това..
     }
 
 }
