@@ -5,7 +5,7 @@ $starttime = $starttime[1] + $starttime[0];	//Микротаймера
 
 //Websend настройки
 include_once 'Websend.php';//Websend api
-$ws = new Websend("77.71.57.99");//IP на сървъра 
+$ws = new Websend("0.0.0.0");//IP на сървъра 
 $ws->password = "999988";//Паролата от config файла на сървъра
 
 
