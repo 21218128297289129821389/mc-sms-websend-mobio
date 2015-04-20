@@ -55,15 +55,14 @@ if(isset($_POST['submit']))
 	$usergroup = htmlspecialchars(addslashes($_POST['usergroup']));
 	
 	if($ws->connect()){ //проверяваме дали сървъра е пуснат...
-		 if($playername==NULL | $code==NULL )
-		 {
-		$errormsg = '<div class="alert alert-danger" role="alert">Попълнете всички полета!</div>'; //Ако полетата са празни изписва това.
+		 if($playername==NULL | $code==NULL ) { //Проверяваме дали полетата са попълнени
+			$errormsg = '<div class="alert alert-danger" role="alert">Попълнете всички полета!</div>'; //Ако полетата са празни изписва това.
 		 }else{
-		 	 if(mobio_checkcode($servID, $code, 0) == 1) {
+		 	 if(mobio_checkcode($servID, $code, 0) == 1) { //Проверяваме мобио кода
 				$ws->doCommandAsConsole("pex user $playername group set $usergroup"); //Съответно ако искаш за един месец можеш да видиш в wiki-то на pex за lifetime
-				$ws->doCommandAsConsole("say $playername buy $usergroup");
+				$ws->doCommandAsConsole("say $playername buy $usergroup"); //Съобщаваме на всички, че някой си е купил еди какво си..
         		$ws->disconnect();
-				$errormsg = '<div class="alert alert-success" role="alert">Честито <font color="black">('.$playername.')</font> групата <font color="orange">('.$usergroup.')</font> е активирана!</div>'; //Активирана група...
+				$errormsg = '<div class="alert alert-success" role="alert">Честито <font color="black">('.$playername.')</font> групата <font color="orange">('.$usergroup.')</font> е активирана!</div>'; //Съобщение за Активирана група...
 			}else{
 				$errormsg = '<div class="alert alert-danger" role="alert">СМС КОДА Е ГРЕШЕН! Опитай отново!</div>'; //Ако кода е грешен изписва това.
 			}
