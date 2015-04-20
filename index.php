@@ -9,7 +9,7 @@ $ws = new Websend("0.0.0.0");//IP на сървъра
 $ws->password = "999988";//Паролата от config файла на сървъра
 
 
-$errormsg = '';
+$errormsg = ''; //Да има...
 
 //Настройки
 $siteTitle = "Сайт име"; //Име на сайта
@@ -147,7 +147,7 @@ if(isset($_POST['submit']))
 		
 	<br />
 	
-	<?php echo $errormsg; ?>
+	<?php echo $errormsg; //Показване на грешките или успешните.. ?>
       </div>
 
       <footer class="footer">
