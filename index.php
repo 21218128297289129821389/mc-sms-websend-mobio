@@ -1,77 +1,89 @@
 <?php
 date_default_timezone_set('Europe/Sofia'); //Задаваме времева зона
-$starttime = explode(' ', microtime());		//Стартираме
-$starttime = $starttime[1] + $starttime[0];	//Микротаймера
+$starttime = explode(' ', microtime()); //Стартираме
+$starttime = $starttime[1] + $starttime[0]; //Микротаймера
 
-//Websend настройки
-include_once 'Websend.php';//Websend api
-$ws = new Websend("0.0.0.0");//IP на сървъра 
-$ws->password = "999988";//Паролата от config файла на сървъра
+// Websend настройки
 
+include_once 'Websend.php';
 
+ // Websend api
+
+$ws = new Websend("0.0.0.0"); //IP на сървъра
+$ws->password = "999988"; //Паролата от config файла на сървъра
 $errormsg = ''; //Да има... (Не попълвай.)
 
-//Настройки
+// Настройки
+
 $siteTitle = "Сайт име"; //Име на сайта
-
 $siteDescription = "Сайт описание"; //Description
-
 $siteNavTextTitle = "Сайт име"; //Текста на шапката
 
-//---/
+// ---/
 
 $servID = 26130; //ID на услуга от Mobio.bg
-
 $smsSendInfo = "Изпрати смс на номер 0000 с текст TXTTT на цена 6.00лв с ДДС!"; //Информация за изпращане на смс-а
 
-//Функция за връзка с mobio.bg
-function mobio_checkcode($servID, $code, $debug=0) {
-	
+// Функция за връзка с mobio.bg
+
+function mobio_checkcode($servID, $code, $debug = 0)
+{
 	$res_lines = file("http://www.mobio.bg/code/checkcode.php?servID=$servID&code=$code");
-	
 	$ret = 0;
-	if($res_lines) {
-		
-		if(strstr("PAYBG=OK", $res_lines[0])) {
+	if ($res_lines)
+	{
+		if (strstr("PAYBG=OK", $res_lines[0]))
+		{
 			$ret = 1;
-			}else{
-			if($debug)
-			echo $line."\n";
 		}
-		}else{
-		if($debug)
-		echo "Unable to connect to mobio.bg server.\n";
+		else
+		{
+			if ($debug) echo $line . "\n";
+		}
+	}
+	else
+	{
+		if ($debug) echo "Unable to connect to mobio.bg server.\n";
 		$ret = 0;
 	}
-	
+
 	return $ret;
 }
 
-//Заявката
-if(isset($_POST['submit']))
+// Заявката
+
+if (isset($_POST['submit']))
 {
 	$code = htmlspecialchars(addslashes(trim($_POST['code'])));
 	$playername = htmlspecialchars(addslashes($_POST['playername']));
 	$usergroup = htmlspecialchars(addslashes($_POST['usergroup']));
-	
-	if($ws->connect()){ //проверяваме дали сървъра е пуснат...
-		 if($playername==NULL | $code==NULL ) { //Проверяваме дали полетата са попълнени
+	if ($ws->connect())
+	{ //проверяваме дали сървъра е пуснат...
+		if ($playername == NULL | $code == NULL)
+		{ //Проверяваме дали полетата са попълнени
 			$errormsg = '<div class="alert alert-danger" role="alert">Попълнете всички полета!</div>'; //Ако полетата са празни изписва това.
-		 }else{
-		 	 if(mobio_checkcode($servID, $code, 0) == 1) { //Проверяваме мобио кода
+		}
+		else
+		{
+			if (mobio_checkcode($servID, $code, 0) == 1)
+			{ //Проверяваме мобио кода
 				$ws->doCommandAsConsole("pex user $playername group set $usergroup"); //Съответно ако искаш за един месец можеш да видиш в wiki-то на pex за lifetime
 				$ws->doCommandAsConsole("say $playername buy $usergroup"); //Съобщаваме на всички, че някой си е купил еди какво си..
-        		$ws->disconnect();
-				$errormsg = '<div class="alert alert-success" role="alert">Честито <font color="black">('.$playername.')</font> групата <font color="orange">('.$usergroup.')</font> е активирана!</div>'; //Съобщение за Активирана група...
-			}else{
+				$ws->disconnect();
+				$errormsg = '<div class="alert alert-success" role="alert">Честито <font color="black">(' . $playername . ')</font> групата <font color="orange">(' . $usergroup . ')</font> е активирана!</div>'; //Съобщение за Активирана група...
+			}
+			else
+			{
 				$errormsg = '<div class="alert alert-danger" role="alert">СМС КОДА Е ГРЕШЕН! Опитай отново!</div>'; //Ако кода е грешен изписва това.
 			}
-		 }
-	}else{
+		}
+	}
+	else
+	{
 		$errormsg = '<div class="alert alert-danger" role="alert">Сървъра е офлайн, моля ела отново когато е пуснат!</div>'; //Ако сървъра е спрян изписва това..
-    }
-
+	}
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="bg">
